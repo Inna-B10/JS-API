@@ -1,7 +1,32 @@
-const urlAll = "https://free-to-play-games-database.p.rapidapi.com/api/games";
-const output = document.getElementById("output");
+import { createNode } from "./utilities.js";
+import { showGameDetails } from "./details.js";
 
-async function getGamesData(url) {
+export const urlApi = "https://free-to-play-games-database.p.rapidapi.com/api";
+const urlAllGames = urlApi.concat("/games");
+const urlWebGames = urlApi.concat("/games?platform=browser");
+const urlPcGames = urlApi.concat("/games?platform=pc");
+export const output = document.getElementById("output");
+export const currentLocation = window.location.pathname;
+
+if (currentLocation === "/index.html") {
+  const allGames = document.getElementById("all-games");
+  const webGames = document.getElementById("web-games");
+  const pcGames = document.getElementById("pc-games");
+
+  getGamesData(urlAllGames);
+
+  allGames.addEventListener("click", () => {
+    getGamesData(urlAllGames);
+  });
+  webGames.addEventListener("click", () => {
+    getGamesData(urlWebGames);
+  });
+  pcGames.addEventListener("click", () => {
+    getGamesData(urlPcGames);
+  });
+}
+
+export async function getGamesData(url) {
   const options = {
     method: "GET",
     headers: {
@@ -14,7 +39,7 @@ async function getGamesData(url) {
     const response = await fetch(url, options);
     if (response.ok) {
       const result = await response.json();
-      return result;
+      updateDisplay(result);
     } else {
       console.log("Could not fetch data");
       output.innerText = "Something got wrong";
@@ -24,21 +49,31 @@ async function getGamesData(url) {
     output.innerText = "An error occurred when fetching data";
   }
 }
-const data = await getGamesData(urlAll);
-showGames(data);
+// const data = await getGamesData(urlAllGames);
+// showGames(data);
 
-function createNode(node, attributes) {
-  const el = document.createElement(node);
-  for (let key in attributes) {
-    el.setAttribute(key, attributes[key]);
+function updateDisplay(array) {
+  switch (currentLocation) {
+    case "/index.html":
+      showGames(array);
+      break;
+    case "/details.html":
+      showGameDetails(array);
+      break;
   }
-  return el;
 }
 
 function showGames(array) {
+  //TODO some games has web and pc platform. Fix card display!
+  //console.log(array[178]); //two platforms
+  //42, 55,178,200,228,244,248
+  if (array) {
+    output.innerText = "";
+  }
   let alt = "";
   let iconPath = "";
   array.forEach((element) => {
+    // console.log(element.platform, element.id, array.indexOf(element));
     const card = createNode("div", {
       class: "flex column card",
     });
@@ -52,13 +87,14 @@ function showGames(array) {
     const shortDesc = createNode("p", {});
     shortDesc.innerText = `${element.short_description}`;
     const details = createNode("div", {
-      class: "flex",
+      class: "flex card-details",
     });
-    if (element.genre === "Web Browser") {
-      alt = "Browser based game";
+
+    if (element.platform === "Web Browser") {
+      alt = "Browser-based game";
       iconPath = "../images/web.png";
     } else {
-      alt = "Game for Windows";
+      alt = "Available on Windows";
       iconPath = "../images/windows.png";
     }
     const platform = createNode("img", {
@@ -68,12 +104,16 @@ function showGames(array) {
     });
     const genre = createNode("p", {});
     genre.innerText = `${element.genre}`;
-    details.appendChild(platform);
-    details.appendChild(genre);
-    card.appendChild(thumb);
-    card.appendChild(title);
-    card.appendChild(shortDesc);
-    card.appendChild(details);
+
+    const readMore = createNode("a", {
+      href: `details.html?id=${element.id}`,
+      target: "_blank",
+      role: "button",
+    });
+    readMore.innerText = "Read more";
+
+    details.append(platform, genre);
+    card.append(thumb, title, shortDesc, details, readMore);
     output.appendChild(card);
   });
 }

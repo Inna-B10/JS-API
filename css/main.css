@@ -23,11 +23,19 @@ body {
 }
 
 #output {
-    margin: 20px;
+    width: 100%;
     flex-wrap: wrap;
-    gap: 20px
+    justify-content: center;
+    gap: 40px
 }
 
 .card {
     width: 20%;
+    min-width: 200px;
+    justify-content: space-between;
+}
+
+.card-details {
+    justify-content: space-between;
+    padding: 10px;
 }
