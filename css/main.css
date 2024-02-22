@@ -1,27 +1,3 @@
-*,
-*::after,
-*::before {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-size: 16px;
-}
-
-.flex {
-    display: flex;
-}
-
-.column {
-    flex-direction: column;
-}
-
-.text-center {
-    text-align: center;
-}
-
 #output {
     width: 100%;
     flex-wrap: wrap;
@@ -39,3 +15,28 @@ body {
     justify-content: space-between;
     padding: 10px;
 }
+
+/* ----------- Show / Hide Platform Menu (Standart/mobile Version) ---------- */
+.hidden {
+    display: flex;
+}
+
+@media screen and (max-width: 440px) {
+
+    #platform-buttons {
+        flex-direction: column;
+    }
+
+    .hidden {
+        display: none;
+    }
+}
+
+@media screen and (min-width:439px) {
+
+    #selectPlatform {
+        display: none;
+    }
+}
+
+/* -------------------------------------------------------------------------- */

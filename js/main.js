@@ -13,8 +13,11 @@ if (currentLocation === "/JS-API/") {
   const webGames = document.getElementById("web-games");
   const pcGames = document.getElementById("pc-games");
 
+  console.log(allGames);
+  //display All games by default
   getGamesData(urlAllGames);
 
+  //choose platform
   allGames.addEventListener("click", () => {
     getGamesData(urlAllGames);
   });
@@ -24,8 +27,17 @@ if (currentLocation === "/JS-API/") {
   pcGames.addEventListener("click", () => {
     getGamesData(urlPcGames);
   });
+
+  /* ----------- Show / Hide Platform Menu (Standart/mobile Version) ---------- */
+  const menuButton = document.querySelector(".choose");
+  const menuLinks = document.querySelector("#platform-buttons");
+
+  menuButton.addEventListener("click", () => {
+    menuLinks.classList.toggle("hidden");
+  });
 }
 
+/* ------------------- Main Function To Get Data From API ------------------- */
 export async function getGamesData(url) {
   const options = {
     method: "GET",
@@ -49,9 +61,8 @@ export async function getGamesData(url) {
     output.innerText = "An error occurred when fetching data";
   }
 }
-// const data = await getGamesData(urlAllGames);
-// showGames(data);
 
+/* ----------------------- Display Data On The Screen ----------------------- */
 function updateDisplay(array) {
   switch (currentLocation) {
     case "/JS-API/":
@@ -63,6 +74,7 @@ function updateDisplay(array) {
   }
 }
 
+/* -------------------- Create HTML Elements (index Page) ------------------- */
 function showGames(array) {
   //TODO some games has web and pc platform. Fix card display!
   //console.log(array[178]); //two platforms
@@ -78,14 +90,14 @@ function showGames(array) {
       class: "flex column card",
     });
     const thumb = createNode("img", {
-      src: `${element.thumbnail}`,
-      alt: `${element.title}`,
-      title: `${element.title}`,
+      src: element.thumbnail,
+      alt: element.title,
+      title: element.title,
     });
     const title = createNode("h2", {});
-    title.innerText = `${element.title}`;
+    title.innerText = element.title;
     const shortDesc = createNode("p", {});
-    shortDesc.innerText = `${element.short_description}`;
+    shortDesc.innerText = element.short_description;
     const details = createNode("div", {
       class: "flex card-details",
     });
@@ -98,12 +110,12 @@ function showGames(array) {
       iconPath = "images/windows.png";
     }
     const platform = createNode("img", {
-      src: `${iconPath}`,
-      alt: `${alt}`,
-      title: `${alt}`,
+      src: iconPath,
+      alt: alt,
+      title: alt,
     });
     const genre = createNode("p", {});
-    genre.innerText = `${element.genre}`;
+    genre.innerText = element.genre;
 
     const readMore = createNode("a", {
       href: `details.html?id=${element.id}`,
