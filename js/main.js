@@ -57,7 +57,7 @@ function updateDisplay(array) {
     case "/JS-API/":
       showGames(array);
       break;
-    case "/details.html":
+    case "/JS-API/details.html":
       showGameDetails(array);
       break;
   }
@@ -92,10 +92,10 @@ function showGames(array) {
 
     if (element.platform === "Web Browser") {
       alt = "Browser-based game";
-      iconPath = "../images/web.png";
+      iconPath = "images/web.png";
     } else {
       alt = "Available on Windows";
-      iconPath = "../images/windows.png";
+      iconPath = "images/windows.png";
     }
     const platform = createNode("img", {
       src: `${iconPath}`,
