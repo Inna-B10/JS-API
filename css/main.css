@@ -18,7 +18,11 @@
 
 /* ----------- Show / Hide Platform Menu (Standart/mobile Version) ---------- */
 .hidden {
-    display: flex;
+    /* display: flex; */
+}
+
+#platform-buttons {
+    /* display: flex; */
 }
 
 @media screen and (max-width: 440px) {

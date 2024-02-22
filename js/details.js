@@ -104,6 +104,7 @@ export function showGameDetails(array) {
   const publisherTitle = createNode("h3", {});
   publisherTitle.innerHTML = "Publisher: <br>";
   publisherDiv.appendChild(publisherTitle);
+  publisherDiv.innerHTML += array.publisher;
   // -------------------------------- Release date
   //TODO change date format
   const dateDiv = createNode("div", {});

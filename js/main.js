@@ -13,7 +13,6 @@ if (currentLocation === "/JS-API/") {
   const webGames = document.getElementById("web-games");
   const pcGames = document.getElementById("pc-games");
 
-  console.log(allGames);
   //display All games by default
   getGamesData(urlAllGames);
 
@@ -34,6 +33,7 @@ if (currentLocation === "/JS-API/") {
 
   menuButton.addEventListener("click", () => {
     menuLinks.classList.toggle("hidden");
+    menuLinks.classList.toggle("flex");
   });
 }
 
@@ -63,6 +63,7 @@ export async function getGamesData(url) {
 }
 
 /* ----------------------- Display Data On The Screen ----------------------- */
+
 function updateDisplay(array) {
   switch (currentLocation) {
     case "/JS-API/":
@@ -76,16 +77,12 @@ function updateDisplay(array) {
 
 /* -------------------- Create HTML Elements (index Page) ------------------- */
 function showGames(array) {
-  //TODO some games has web and pc platform. Fix card display!
-  //console.log(array[178]); //two platforms
-  //42, 55,178,200,228,244,248
   if (array) {
     output.innerText = "";
   }
   let alt = "";
   let iconPath = "";
   array.forEach((element) => {
-    // console.log(element.platform, element.id, array.indexOf(element));
     const card = createNode("div", {
       class: "flex column card",
     });
@@ -102,17 +99,21 @@ function showGames(array) {
       class: "flex card-details",
     });
 
-    if (element.platform === "Web Browser") {
-      alt = "Browser-based game";
-      iconPath = "images/web.png";
-    } else {
-      alt = "Available on Windows";
-      iconPath = "images/windows.png";
-    }
-    const platform = createNode("img", {
-      src: iconPath,
-      alt: alt,
-      title: alt,
+    const platformArray = element.platform.split(", ");
+    platformArray.map((item) => {
+      if (item === "Web Browser") {
+        alt = "Browser-based game";
+        iconPath = "images/web.png";
+      } else {
+        alt = "Available on Windows";
+        iconPath = "images/windows.png";
+      }
+      const platform = createNode("img", {
+        src: iconPath,
+        alt: alt,
+        title: alt,
+      });
+      details.appendChild(platform);
     });
     const genre = createNode("p", {});
     genre.innerText = element.genre;
@@ -124,7 +125,7 @@ function showGames(array) {
     });
     readMore.innerText = "Read more";
 
-    details.append(platform, genre);
+    details.appendChild(genre);
     card.append(thumb, title, shortDesc, details, readMore);
     output.appendChild(card);
   });
