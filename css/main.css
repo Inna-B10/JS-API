@@ -1,0 +1,41 @@
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-size: 16px;
+}
+
+.flex {
+    display: flex;
+}
+
+.column {
+    flex-direction: column;
+}
+
+.text-center {
+    text-align: center;
+}
+
+#output {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px
+}
+
+.card {
+    width: 20%;
+    min-width: 200px;
+    justify-content: space-between;
+}
+
+.card-details {
+    justify-content: space-between;
+    padding: 10px;
+}
