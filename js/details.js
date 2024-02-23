@@ -1,16 +1,6 @@
 import { getGamesData, output } from "./main.js";
 import { createNode } from "./utilities.js";
 
-// import { urlApi, currentLocation } from "./main.js";
-// console.log(urlApi, currentLocation);
-// if (currentLocation === "/details.html") {
-//   const gameId = window.location.href.split("=")[1];
-//
-//   const gameDetailsUrl = urlApi.concat(`/game?id=${gameId}`);
-//   console.log(gameDetailsUrl);
-//   getGamesData(gameDetailsUrl);
-// }
-
 const detailsOutput = document.getElementById("detailsOutput");
 
 /* ----------------------- Get Details Of Current Game ---------------------- */
@@ -26,7 +16,6 @@ if (window.location.pathname === "/JS-API/details.html") {
 
 /* -------------------- Create HTML Elements (Details Page) ------------------- */
 export function showGameDetails(array) {
-  console.log(array);
   const titlePage = document.getElementById("title");
   titlePage.innerText = array.title;
 
