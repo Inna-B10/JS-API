@@ -8,13 +8,15 @@ const urlPcGames = urlApi.concat("/games?platform=pc");
 export const output = document.getElementById("output");
 export const currentLocation = window.location.pathname;
 
-if (currentLocation === "/index.html") {
+if (currentLocation === "/JS-API/") {
   const allGames = document.getElementById("all-games");
   const webGames = document.getElementById("web-games");
   const pcGames = document.getElementById("pc-games");
 
+  //display All games by default
   getGamesData(urlAllGames);
 
+  //choose platform
   allGames.addEventListener("click", () => {
     getGamesData(urlAllGames);
   });
@@ -24,8 +26,18 @@ if (currentLocation === "/index.html") {
   pcGames.addEventListener("click", () => {
     getGamesData(urlPcGames);
   });
+
+  /* ----------- Show / Hide Platform Menu (Standart/mobile Version) ---------- */
+  const menuButton = document.querySelector(".choose");
+  const menuLinks = document.querySelector("#platform-buttons");
+
+  menuButton.addEventListener("click", () => {
+    menuLinks.classList.toggle("hidden");
+    menuLinks.classList.toggle("flex");
+  });
 }
 
+/* ------------------- Main Function To Get Data From API ------------------- */
 export async function getGamesData(url) {
   const options = {
     method: "GET",
@@ -49,61 +61,62 @@ export async function getGamesData(url) {
     output.innerText = "An error occurred when fetching data";
   }
 }
-// const data = await getGamesData(urlAllGames);
-// showGames(data);
+console.log(window);
+/* ----------------------- Display Data On The Screen ----------------------- */
 
 function updateDisplay(array) {
   switch (currentLocation) {
-    case "/index.html":
+    case "/JS-API/":
       showGames(array);
       break;
-    case "/details.html":
+    case "/JS-API/details.html":
       showGameDetails(array);
       break;
   }
 }
 
+/* -------------------- Create HTML Elements (index Page) ------------------- */
 function showGames(array) {
-  //TODO some games has web and pc platform. Fix card display!
-  //console.log(array[178]); //two platforms
-  //42, 55,178,200,228,244,248
   if (array) {
     output.innerText = "";
   }
   let alt = "";
   let iconPath = "";
   array.forEach((element) => {
-    // console.log(element.platform, element.id, array.indexOf(element));
     const card = createNode("div", {
       class: "flex column card",
     });
     const thumb = createNode("img", {
-      src: `${element.thumbnail}`,
-      alt: `${element.title}`,
-      title: `${element.title}`,
+      src: element.thumbnail,
+      alt: element.title,
+      title: element.title,
     });
     const title = createNode("h2", {});
-    title.innerText = `${element.title}`;
+    title.innerText = element.title;
     const shortDesc = createNode("p", {});
-    shortDesc.innerText = `${element.short_description}`;
+    shortDesc.innerText = element.short_description;
     const details = createNode("div", {
       class: "flex card-details",
     });
 
-    if (element.platform === "Web Browser") {
-      alt = "Browser-based game";
-      iconPath = "../images/web.png";
-    } else {
-      alt = "Available on Windows";
-      iconPath = "../images/windows.png";
-    }
-    const platform = createNode("img", {
-      src: `${iconPath}`,
-      alt: `${alt}`,
-      title: `${alt}`,
+    const platformArray = element.platform.split(", ");
+    platformArray.map((item) => {
+      if (item === "Web Browser") {
+        alt = "Browser-based game";
+        iconPath = "images/web.png";
+      } else {
+        alt = "Available on Windows";
+        iconPath = "images/windows.png";
+      }
+      const platform = createNode("img", {
+        src: iconPath,
+        alt: alt,
+        title: alt,
+      });
+      details.appendChild(platform);
     });
     const genre = createNode("p", {});
-    genre.innerText = `${element.genre}`;
+    genre.innerText = element.genre;
 
     const readMore = createNode("a", {
       href: `details.html?id=${element.id}`,
@@ -112,7 +125,7 @@ function showGames(array) {
     });
     readMore.innerText = "Read more";
 
-    details.append(platform, genre);
+    details.appendChild(genre);
     card.append(thumb, title, shortDesc, details, readMore);
     output.appendChild(card);
   });

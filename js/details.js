@@ -13,7 +13,8 @@ import { createNode } from "./utilities.js";
 
 const detailsOutput = document.getElementById("detailsOutput");
 
-if (window.location.pathname === "/details.html") {
+/* ----------------------- Get Details Of Current Game ---------------------- */
+if (window.location.pathname === "/JS-API/details.html") {
   const gameId = window.location.href.split("=")[1];
 
   const gameDetailsUrl =
@@ -22,10 +23,14 @@ if (window.location.pathname === "/details.html") {
     );
   getGamesData(gameDetailsUrl);
 }
+
+/* -------------------- Create HTML Elements (Details Page) ------------------- */
 export function showGameDetails(array) {
   console.log(array);
+  const titlePage = document.getElementById("title");
+  titlePage.innerText = array.title;
 
-  /* -------------------------------------------------------------------------- */
+  /* ------------------------- Thumb+title+description ------------------------ */
   const descWrapper = createNode("div", {
     class: "flex",
   });
@@ -49,7 +54,7 @@ export function showGameDetails(array) {
   let screenshots = "";
   if (array.screenshots.length > 0) {
     screenshots = createNode("div", {
-      class: "flex",
+      class: "flex screenshots",
     });
     //width of screenshots
     const width = 100 / array.screenshots.length;
@@ -57,7 +62,7 @@ export function showGameDetails(array) {
     array.screenshots.forEach((element) => {
       const img = createNode("img", {
         src: element.image,
-        style: `width:${width}%`,
+        style: "width:20vw",
       });
       screenshots.appendChild(img);
     });
@@ -76,13 +81,13 @@ export function showGameDetails(array) {
   const divLeft = createNode("div", {
     class: "flex column",
   });
-  //Platform
+  // -------------------------------- Platform
   const platformDiv = createNode("div", {});
   const platformTitle = createNode("h3", {});
   platformTitle.innerHTML = "Platform: <br>";
   platformDiv.appendChild(platformTitle);
   platformDiv.innerHTML += array.platform;
-  //Genre
+  // -------------------------------- Genre
   const genreDiv = createNode("div", {});
   const genreTitle = createNode("h3", {});
   genreTitle.innerHTML = "Genre: <br>";
@@ -94,13 +99,13 @@ export function showGameDetails(array) {
   const divRight = createNode("div", {
     class: "flex column",
   });
-  //Publisher
+  // -------------------------------- Publisher
   const publisherDiv = createNode("div", {});
   const publisherTitle = createNode("h3", {});
   publisherTitle.innerHTML = "Publisher: <br>";
   publisherDiv.appendChild(publisherTitle);
   publisherDiv.innerHTML += array.publisher;
-  //Release date
+  // -------------------------------- Release date
   //TODO change date format
   const dateDiv = createNode("div", {});
   const dateTitle = createNode("h3", {});
@@ -113,7 +118,7 @@ export function showGameDetails(array) {
 
   addInfoWrapper.append(addInfoTitle, addInfoDiv);
 
-  /* ------------------------------ Link To Game ------------------------------ */
+  /* ---------------------------- Link To The Game ---------------------------- */
   const link = createNode("a", {
     href: array.game_url,
     target: "_blank",

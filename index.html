@@ -4,12 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./css/main.css" />
+    <link rel="stylesheet" href="./css/style.css" />
     <script type="module" src="js/main.js"></script>
     <title>Free Games</title>
   </head>
   <body>
-    <h1>Free games api</h1>
-    <div id="platform" class="flex">
+    <div id="selectPlatform">
+      Select platform <img src="images/info.png" alt="" class="choose" />
+    </div>
+    <div id="platform-buttons" class="hidden">
       <button id="all-games">All games</button>
       <button id="web-games">Web Browser</button>
       <button id="pc-games">PC (Windows)</button>
